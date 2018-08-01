@@ -39,10 +39,11 @@ gulp.task('css-libs', ['sass'], function() { //Сжатие CSS
         .pipe(gulp.dest('app/css')); 
 });
 
-gulp.task('scripts', function() { //Сжатие JS
+gulp.task('scripts', function() { //Подключение и сжатие JS
     return gulp.src([
-        'app/libs/jquery/dist/jquery.min.js',
-        'app/libs/magnific-popup/dist/jquery.magnific-popup.min.js'
+        'app/libs/jquery/dist/jquery.min.js', //Jquery
+        'app/libs/magnific-popup/dist/jquery.magnific-popup.min.js', //Magnific-popup
+        'app/libs/bootstrap/dist/js/**/*.js' //Bootstrap
         ])
         .pipe(concat('libs.min.js'))
         .pipe(uglify())
@@ -61,22 +62,22 @@ gulp.task('img', function() { //Сжатие изображений
 });
 
 gulp.task('watch', ['browser-sync','css-libs', 'scripts'] ,function() { //Компиляция в браузер
-    gulp.watch('app/sass/**/*.sass', ['sass']);
-    gulp.watch('app/*.html', browserSync.reload);
-    gulp.watch('app/js/**/*.js', browserSync.reload);
+    gulp.watch('app/sass/**/*.sass', ['sass']); //SASS
+    gulp.watch('app/*.html', browserSync.reload); //HTML
+    gulp.watch('app/js/**/*.js', browserSync.reload); //JS
 });
 
 gulp.task('build', ['clean', 'img', 'sass', 'scripts'], function() { //Компиляция в продакшен
-    var buildCss    =   gulp.src([
+    var buildCss    =   gulp.src([ //CSS
         'app/css/main.css',
         'app/css/libs.min.css'
     ])
     .pipe(gulp.dest('dist/css'))
-    var buildFonts  =   gulp.src('app/fonts/**/*')
+    var buildFonts  =   gulp.src('app/fonts/**/*') //Fonts
     .pipe(gulp.dest('dist/fonts'))
-    var buildJs =   gulp.src('app/js/**/*')
+    var buildJs =   gulp.src('app/js/**/*') //JS
     .pipe(gulp.dest('dist/js'))
-    var buildHtml   =   gulp.src('app/*.html')
+    var buildHtml   =   gulp.src('app/*.html') //HTML
     .pipe(gulp.dest('dist'));
 });
 
