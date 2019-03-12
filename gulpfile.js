@@ -41,10 +41,9 @@ gulp.task('css-libs', ['sass'], function() { //Сжатие CSS
 
 gulp.task('scripts', function() { //Подключение и сжатие JS
     return gulp.src([
-        'app/libs/jquery/dist/jquery.min.js', //Jquery
+        'app/libs/jquery/dist/jquery.js', //Jquery
         'app/libs/magnific-popup/dist/jquery.magnific-popup.min.js', //Magnific-popup
         'app/libs/bootstrap/dist/js/**/*.js', //Bootstrap
-        'app/libs/jquery/dist/*.js'//Jquery
         ])
         .pipe(concat('libs.min.js'))
         .pipe(uglify())
