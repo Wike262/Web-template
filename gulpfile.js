@@ -32,7 +32,7 @@ gulp.task('sass', function () { //Компиляция SASS
         .pipe(browserSync.reload({ stream: true }))
 });
 
-gulp.task('css-libs', ['sass'], function () { //Сжатие CSS
+gulp.task('css-libs', gulp.series('sass'), function () { //Сжатие CSS
     return gulp.src('app/css/libs.css')
         .pipe(cssnano())
         .pipe(rename({ suffix: '.min' }))
@@ -61,13 +61,13 @@ gulp.task('img', function () { //Сжатие изображений
         .pipe(gulp.dest('dist/img'))
 });
 
-gulp.task('watch', ['browser-sync', 'css-libs', 'scripts'], function () { //Компиляция в браузер
+gulp.task('watch', gulp.parallel('browser-sync', 'css-libs', 'scripts'), function () { //Компиляция в браузер
     gulp.watch('app/sass/**/*.sass', ['sass']); //SASS
     gulp.watch('app/*.html', browserSync.reload); //HTML
     gulp.watch('app/js/**/*.js', browserSync.reload); //JS
 });
 
-gulp.task('build', ['clean', 'img', 'sass', 'scripts'], function () { //Компиляция в продакшен
+gulp.task('build', gulp.series('clean', 'img', 'sass', 'scripts'), function () { //Компиляция в продакшен
     var buildCss = gulp.src([ //CSS
         'app/css/*.css',
     ])
