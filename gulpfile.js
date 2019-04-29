@@ -1,6 +1,6 @@
 var gulp = require('gulp'), // Gulp
     sass = require('gulp-sass'), // Sass
-    browsersync = require('browser-sync'), // Browser-Sync
+    browserSync = require('browser-sync'), // Browser-Sync
     concat = require('gulp-concat'), // Concat(для конкатенации файлов)
     uglify = require('gulp-uglifyjs'), // Uglify(для сжатия JS)
     cssnano = require('gulp-cssnano'), //CSSnano(сжатие css)
@@ -22,7 +22,7 @@ gulp.task('browser-sync', function (done) { //BrowserSync
 });
 
 gulp.task('clean', function () { //Очищает dist
-    return del(['dist']);
+    return del.sync('dist');
 });
 
 gulp.task('sass', function () { //Компиляция SASS
