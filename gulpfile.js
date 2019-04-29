@@ -1,6 +1,6 @@
 var gulp = require('gulp'), // Gulp
     sass = require('gulp-sass'), // Sass
-    browserSync = require('browser-sync'), // Browser-Sync
+    browsersync = require('browser-sync'), // Browser-Sync
     concat = require('gulp-concat'), // Concat(для конкатенации файлов)
     uglify = require('gulp-uglifyjs'), // Uglify(для сжатия JS)
     cssnano = require('gulp-cssnano'), //CSSnano(сжатие css)
@@ -11,40 +11,48 @@ var gulp = require('gulp'), // Gulp
     cache = require('gulp-cache'), //Кеширование
     autoprefixer = require('gulp-autoprefixer'); //Авто-префиксы CSS
 
-gulp.task('browser-sync', function () { //BrowserSync
-    browserSync({
+gulp.task('browser-sync', function (done) { //BrowserSync
+    browsersync.init({
         server: {
-            baseDir: 'app/'
+            baseDir: 'app'
         },
         notify: false
     });
+    browsersync.watch('app').on('change', browsersync.reload);
+    done();
 });
 
 gulp.task('clean', function () { //Очищает dist
-    return del.sync('dist');
+    return del(['dist']);
 });
 
 gulp.task('sass', function () { //Компиляция SASS
     return gulp.src('app/sass/**/*.sass')
         .pipe(sass())
-        .pipe(autoprefixer(['last 15 versions', '> 1%', 'ie 8', 'ie 7'], { cascade: true }))
+        .pipe(autoprefixer(['last 15 versions', '> 1%', 'ie 8', 'ie 7'], {
+            cascade: true
+        }))
         .pipe(gulp.dest('app/css'))
-        .pipe(browserSync.reload({ stream: true }))
+        .pipe(browsersync.reload({
+            stream: true
+        }))
 });
 
 gulp.task('css-libs', gulp.series('sass'), function () { //Сжатие CSS
     return gulp.src('app/css/libs.css')
         .pipe(cssnano())
-        .pipe(rename({ suffix: '.min' }))
+        .pipe(rename({
+            suffix: '.min'
+        }))
         .pipe(gulp.dest('app/css'));
 });
 
 gulp.task('scripts', function () { //Подключение и сжатие JS
     return gulp.src([
-        'app/libs/jquery/dist/jquery.js', //Jquery
-        'app/libs/magnific-popup/dist/jquery.magnific-popup.min.js', //Magnific-popup
-        'app/libs/bootstrap/dist/js/**/*.js', //Bootstrap
-    ])
+            'app/libs/jquery/dist/jquery.js', //Jquery
+            'app/libs/magnific-popup/dist/jquery.magnific-popup.min.js', //Magnific-popup
+            'app/libs/bootstrap/dist/js/**/*.js', //Bootstrap
+        ])
         .pipe(concat('libs.min.js'))
         .pipe(uglify())
         .pipe(gulp.dest('app/js'));
@@ -55,22 +63,25 @@ gulp.task('img', function () { //Сжатие изображений
         .pipe(cache(imagemin({
             interlaced: true,
             progressive: true,
-            svgoPlugins: [{ removeViewBox: false }],
+            svgoPlugins: [{
+                removeViewBox: false
+            }],
             use: [pngquant()]
         })))
         .pipe(gulp.dest('dist/img'))
 });
 
-gulp.task('watch', gulp.parallel('browser-sync', 'css-libs', 'scripts'), function () { //Компиляция в браузер
-    gulp.watch('app/sass/**/*.sass', ['sass']); //SASS
-    gulp.watch('app/*.html', browserSync.reload); //HTML
-    gulp.watch('app/js/**/*.js', browserSync.reload); //JS
+gulp.task('watch', gulp.series('css-libs', 'scripts', 'browser-sync', ), function (done) { //Компиляция в браузер
+    gulp.watch('app/sass/**/*.sass', gulp.parallel('sass')); //SASS
+    gulp.watch('app/*.html'); //HTML
+    gulp.watch('app/js/**/*.js'); //JS
+    done();
 });
 
-gulp.task('build', gulp.series('clean', 'img', 'sass', 'scripts'), function () { //Компиляция в продакшен
+gulp.task('build', gulp.series('clean', 'img', 'sass', 'scripts'), function (done) { //Компиляция в продакшен
     var buildCss = gulp.src([ //CSS
-        'app/css/*.css',
-    ])
+            'app/css/*.css',
+        ])
         .pipe(gulp.dest('dist/css'))
     var buildFonts = gulp.src('app/fonts/**/*') //Fonts
         .pipe(gulp.dest('dist/fonts'))
@@ -78,10 +89,11 @@ gulp.task('build', gulp.series('clean', 'img', 'sass', 'scripts'), function () {
         .pipe(gulp.dest('dist/js'))
     var buildHtml = gulp.src('app/*.html') //HTML
         .pipe(gulp.dest('dist'));
+    done();
 });
 
-gulp.task('clear', function () { //Очистка кэша
+gulp.task('clear', function (callback) { //Очистка кэша
     return cache.clearAll();
 })
 
-gulp.task('default', ['watch'])
+gulp.task('default', gulp.series('watch'))
