@@ -18,6 +18,7 @@ gulp.task('browser-sync', function (done) { //BrowserSync
         },
         notify: false
     });
+    browserSync.watch('app').on('change', browserSync.reload);
     done();
 });
 
@@ -72,8 +73,8 @@ gulp.task('img', function () { //Сжатие изображений
 
 gulp.task('watch', gulp.series('browser-sync', 'css-libs', 'scripts', function (done) { //Компиляция в браузер
     gulp.watch('app/sass/**/*.sass', gulp.parallel('sass')); //SASS
-    gulp.watch('app/*.html', browserSync.reload); //HTML
-    gulp.watch('app/js/**/*.js', browserSync.reload); //JS
+    gulp.watch('app/*.html'); //HTML
+    gulp.watch('app/js/**/*.js'); //JS
     done();
 }));
 
