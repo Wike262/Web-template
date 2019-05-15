@@ -23,7 +23,7 @@ gulp.task('browser-sync', function (done) { //BrowserSync
 });
 
 gulp.task('clean', function () { //Очищает dist
-    return del.sync('dist');
+    return del(['dist']);
 });
 
 gulp.task('sass', function () { //Компиляция SASS
