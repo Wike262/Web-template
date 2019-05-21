@@ -30,7 +30,8 @@
 После этого окружение настроенно и готово к работе. Если ввести команду `gulp build` пройдет компиляция и все файлы будут перемещенны из `/app/` в `/dist/`
 ## Подробно об окружении
 Файл `gupfile.js` представляет из себя следующее:
-`var gulp = require('gulp'), // Gulp
+```js
+var gulp = require('gulp'), // Gulp
     sass = require('gulp-sass'), // Sass
     browserSync = require('browser-sync'), // Browser-Sync
     concat = require('gulp-concat'), // Concat(для конкатенации файлов)
@@ -130,5 +131,6 @@ gulp.task('clear', function (callback) { //Очистка кэша
     return cache.clearAll();
 })
 
-gulp.task('default', gulp.parallel('watch'));` 
+gulp.task('default', gulp.parallel('watch'));
+```
 ## Подробно об библиотеках
