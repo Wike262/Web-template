@@ -13,12 +13,12 @@
 * **autoprefixer** _Авто-префиксы CSS_
 ---
 Так же подключены такие библиотеки как:
-* **Jquery**
-* **Jquery-Ui**
-* **Bootstrap**
-* **Animate-css**
-* **Magnific-popup**
-* **Clockpicker**
+* **[Jquery](https://jquery.com/)**
+* **[Jquery-Ui](https://jqueryui.com/)**
+* **[Bootstrap](https://bootstrap-4.ru/docs/4.3.1/getting-started/introduction/)**
+* **[Animate-css](https://daneden.github.io/animate.css/)**
+* **[Magnific-popup](https://dimsemenov.com/plugins/magnific-popup/)**
+* **[Clockpicker](https://weareoutman.github.io/clockpicker/)**
 ---
 ## Инструкция
 Для работы с этим шаблоном необходимо иметь:
@@ -28,24 +28,34 @@
 ```cmd
 npm install
 ```
-Установить глобально Gulp: `npm install gulp --save-dev -g`
-И запустить Gulp введя: `gulp watch`
-После этого окружение настроенно и готово к работе. Если ввести команду `gulp build` пройдет компиляция и все файлы будут перемещенны из `/app/` в `/dist/`
+Установить глобально Gulp: 
+```cmd
+npm install gulp --save-dev -g
+```
+И запустить Gulp введя:
+```cmd
+gulp watch
+```
+После этого окружение настроенно и готово к работе. Если ввести команду 
+```cmd
+gulp build
+```
+пройдет компиляция и все файлы будут перемещенны из `/app/` в `/dist/`
 ## Подробно об окружении
 Файл `gupfile.js` представляет из себя следующее:
 ```js
-var gulp = require('gulp'), // Gulp
-    sass = require('gulp-sass'), // Sass
-    browserSync = require('browser-sync'), // Browser-Sync
-    concat = require('gulp-concat'), // Concat(для конкатенации файлов)
-    uglify = require('gulp-uglifyjs'), // Uglify(для сжатия JS)
-    cssnano = require('gulp-cssnano'), //CSSnano(сжатие css)
-    rename = require('gulp-rename'), //Rename(переменивание файлов)
-    del = require('del'), //Del(удаление файлов)
-    imagemin = require('gulp-imagemin'), //Сжатие изображений
-    pngquant = require('imagemin-pngquant'), //Библеотека для работы с png
-    cache = require('gulp-cache'), //Кеширование
-    autoprefixer = require('gulp-autoprefixer'); //Авто-префиксы CSS
+var gulp = require('gulp'),
+    sass = require('gulp-sass'),
+    browserSync = require('browser-sync'),
+    concat = require('gulp-concat'),
+    uglify = require('gulp-uglifyjs'),
+    cssnano = require('gulp-cssnano'),
+    rename = require('gulp-rename'),
+    del = require('del'),
+    imagemin = require('gulp-imagemin'),
+    pngquant = require('imagemin-pngquant'), 
+    cache = require('gulp-cache'),
+    autoprefixer = require('gulp-autoprefixer');
 
 gulp.task('browser-sync', function (done) { //BrowserSync
     browserSync({
@@ -109,14 +119,14 @@ gulp.task('img', function () { //Сжатие изображений
         .pipe(gulp.dest('dist/img'))
 });
 
-gulp.task('watch', gulp.series('browser-sync', 'css-libs', 'scripts', function (done) { //Компиляция в браузер
+gulp.task('watch', gulp.series('browser-sync', 'css-libs', 'scripts', function (done) { //Синхронизация с браузером
     gulp.watch('app/sass/**/*.sass', gulp.parallel('sass')); //SASS
     gulp.watch('app/*.html'); //HTML
     gulp.watch('app/js/**/*.js'); //JS
     done();
 }));
 
-gulp.task('build', gulp.series('clean', 'img', 'sass', 'scripts', function (done) { //Компиляция в продакшен
+gulp.task('build', gulp.series('clean', 'img', 'sass', 'scripts', function (done) { //Компиляция
     var buildCss = gulp.src([ //CSS
             'app/css/*.css',
         ])
@@ -137,3 +147,13 @@ gulp.task('clear', function (callback) { //Очистка кэша
 gulp.task('default', gulp.parallel('watch'));
 ```
 ## Подробно об библиотеках
+* **[Jquery](https://jquery.com/)**
+ **Jquery** - это быстрая, небольшая и многофункциональная библиотека JavaScript. Это делает такие вещи, как прохождение и манипулирование документами HTML, обработку событий, анимацию и Ajax намного проще с помощью простого в использовании API, который работает во множестве браузеров. Благодаря сочетанию универсальности и расширяемости, jQuery изменил способ, которым миллионы людей пишут JavaScript.
+* **[Jquery-Ui](https://jqueryui.com/)**
+ Пользовательский интерфейс jQuery представляет собой набор взаимодействий, эффектов, виджетов и тем пользовательского интерфейса, созданный на основе библиотеки JavaScript jQuery. JQuery UI - идеальный выбор для создания веб-приложений с высокой степенью интерактивности или просто для добавления средства выбора даты в элемент управления формы.
+* **[Bootstrap](https://bootstrap-4.ru/docs/4.3.1/getting-started/introduction/)**
+ **Bootstrap** - это инструментарий с открытым исходным кодом для разработки с помощью HTML, CSS и JS. Используйте переменные Sass и миксины, гибкую систему сеток, множество готовых компонентов и мощных плагинов, основанных на jQuery.
+* **[Animate-css](https://daneden.github.io/animate.css/)**
+ **Animate-css** - очень гибкая библиотека js для плавного появления блоков.
+* **[Clockpicker](https://weareoutman.github.io/clockpicker/)**
+ **Clockpicker** - библеотека для красивой анимации выбора часов
