@@ -49,9 +49,11 @@ gulp.task('css-libs', gulp.series('sass', function () { //Сжатие CSS
 
 gulp.task('scripts', function () { //Подключение и сжатие JS
     return gulp.src([
-            'app/libs/jquery/dist/jquery.js', //Jquery
-            'app/libs/magnific-popup/dist/jquery.magnific-popup.min.js', //Magnific-popup
-            'app/libs/bootstrap/dist/js/**/*.js', //Bootstrap
+            'app/libs/jquery/jquery.min.js', //Jquery
+            'app/libs/jquery_ui/jquery-ui.min.js', //Jquery-ui
+            'app/libs/clockpicker-gh-pages/jquery-clockpicker.min.js', //Clockpicker
+            'app/libs/magnific-popup/jquery.magnific-popup.min.js', //Magnific-popup
+            'app/libs/bootstrap/js/bootstrap.min.js', //Bootstrap
         ])
         .pipe(concat('libs.min.js'))
         .pipe(uglify())
